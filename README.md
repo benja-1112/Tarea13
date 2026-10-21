@@ -10,17 +10,17 @@ Integrantes: completar nombre y apellido.
 
 ## Cómo levantarla
 
-En esta carpeta:
+En esta carpeta. El `-p tarea13` hace que los comandos afecten solo a ese proyecto y no a otros contenedores:
 
 ```bash
-docker compose up -d --build
+docker compose -p tarea13 up -d --build
 ```
 
-Si ya habías levantado el proyecto antes y la base no muestra los autos de prueba, hay que recrear el volumen para que vuelva a correr `api/config/init.sql`:
+Si ya habías levantado este proyecto antes y la base no muestra los autos de prueba, hay que recrear solo su volumen para que vuelva a correr `api/config/init.sql`:
 
 ```bash
-docker compose down -v
-docker compose up -d --build
+docker compose -p tarea13 down -v
+docker compose -p tarea13 up -d --build
 ```
 
 Cuando los contenedores estén listos:
