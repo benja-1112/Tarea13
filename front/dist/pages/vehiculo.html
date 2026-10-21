@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha del auto</title>
+    <link rel="icon" href="/front/dist/assets/logo.png" type="image/png">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/mobile.css">
+</head>
+<body data-pagina="vehiculo">
+
+    <header class="barra">
+        <a class="barra__marca" href="/front/index.html">
+            <img class="barra__logo" src="/front/dist/assets/logo.png" alt="Autocars">
+        </a>
+        <nav class="barra__nav">
+            <a class="barra__link" href="/front/index.html">Listado</a>
+            <a class="barra__link" href="./agregar.html">Agregar auto</a>
+        </nav>
+    </header>
+
+    <main class="pagina">
+        <div class="pagina__encabezado">
+            <div>
+                <p class="sobretexto">Ficha</p>
+                <h1>Datos del auto</h1>
+            </div>
+            <a class="boton boton--secundario" href="/front/index.html">Volver al listado</a>
+        </div>
+
+        <p id="aviso" class="aviso" hidden></p>
+
+        <div id="ficha" class="ficha" hidden>
+            <section class="resumen" aria-label="Información del auto">
+                <h2>Información</h2>
+                <dl class="resumen__lista">
+                    <div>
+                        <dt>Marca</dt>
+                        <dd id="resumen-marca"></dd>
+                    </div>
+                    <div>
+                        <dt>País de origen</dt>
+                        <dd id="resumen-pais"></dd>
+                    </div>
+                    <div>
+                        <dt>Modelo</dt>
+                        <dd id="resumen-modelo"></dd>
+                    </div>
+                    <div>
+                        <dt>Año</dt>
+                        <dd id="resumen-anio"></dd>
+                    </div>
+                    <div>
+                        <dt>Precio</dt>
+                        <dd id="resumen-precio"></dd>
+                    </div>
+                    <div>
+                        <dt>Estado</dt>
+                        <dd id="resumen-estado"></dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section class="panel">
+                <h2>Modificar datos</h2>
+                <form id="form-vehiculo" novalidate>
+                    <div class="campo">
+                        <label for="id_marca">Marca</label>
+                        <select id="id_marca" name="id_marca" required></select>
+                        <p class="campo__error" data-error-for="id_marca"></p>
+                    </div>
+                    <div class="campo">
+                        <label for="modelo">Modelo</label>
+                        <input id="modelo" name="modelo" type="text" maxlength="50" required>
+                        <p class="campo__error" data-error-for="modelo"></p>
+                    </div>
+                    <div class="campo-fila">
+                        <div class="campo">
+                            <label for="anio">Año</label>
+                            <input id="anio" name="anio" type="number" min="1900" step="1" inputmode="numeric">
+                            <p class="campo__error" data-error-for="anio"></p>
+                        </div>
+                        <div class="campo">
+                            <label for="precio">Precio</label>
+                            <input id="precio" name="precio" type="number" min="0" step="0.01" inputmode="decimal">
+                            <p class="campo__error" data-error-for="precio"></p>
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label for="estado">Estado</label>
+                        <select id="estado" name="estado" required>
+                            <option value="">Elegí un estado</option>
+                            <option value="Nuevo">Nuevo</option>
+                            <option value="Usado">Usado</option>
+                        </select>
+                        <p class="campo__error" data-error-for="estado"></p>
+                    </div>
+                    <button class="boton" type="submit">Guardar cambios</button>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autos — listado</title>
+    <link rel="icon" href="/front/dist/assets/logo.png" type="image/png">
+    <link rel="stylesheet" href="./dist/css/style.css">
+    <link rel="stylesheet" href="./dist/css/mobile.css">
+</head>
+<body data-pagina="listado">
+
+    <header class="barra">
+        <a class="barra__marca" href="/front/index.html">
+            <img class="barra__logo" src="/front/dist/assets/logo.png" alt="Autocars">
+        </a>
+        <nav class="barra__nav">
+            <a class="barra__link barra__link--activo" href="/front/index.html">Listado</a>
+            <a class="barra__link" href="./dist/pages/agregar.html">Agregar auto</a>
+        </nav>
+    </header>
+
+    <main class="pagina">
+        <div class="pagina__encabezado">
+            <div>
+                <p class="sobretexto">Inventario</p>
+                <h1>Autos registrados</h1>
+            </div>
+            <a class="boton" href="./dist/pages/agregar.html">Agregar auto</a>
+        </div>
+
+        <p id="aviso" class="aviso" hidden></p>
+        <section id="listado" class="listado" aria-live="polite"></section>
+    </main>
+
+    <script src="./dist/js/api.js"></script>
+    <script src="./dist/js/script.js"></script>
+</body>
+</html>

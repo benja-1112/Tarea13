@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar auto</title>
+    <link rel="icon" href="/front/dist/assets/logo.png" type="image/png">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/mobile.css">
+</head>
+<body data-pagina="agregar">
+
+    <header class="barra">
+        <a class="barra__marca" href="/front/index.html">
+            <img class="barra__logo" src="/front/dist/assets/logo.png" alt="Autocars">
+        </a>
+        <nav class="barra__nav">
+            <a class="barra__link" href="/front/index.html">Listado</a>
+            <a class="barra__link barra__link--activo" href="./agregar.html">Agregar auto</a>
+        </nav>
+    </header>
+
+    <main class="pagina">
+        <div class="pagina__encabezado">
+            <div>
+                <p class="sobretexto">Alta</p>
+                <h1>Agregar auto</h1>
+            </div>
+            <a class="boton boton--secundario" href="/front/index.html">Volver al listado</a>
+        </div>
+
+        <p id="aviso" class="aviso" hidden></p>
+
+        <section class="panel panel--angosto">
+            <form id="form-vehiculo" novalidate>
+                <div class="campo">
+                    <label for="id_marca">Marca</label>
+                    <select id="id_marca" name="id_marca" required></select>
+                    <p class="campo__error" data-error-for="id_marca"></p>
+                </div>
+                <div class="campo">
+                    <label for="modelo">Modelo</label>
+                    <input id="modelo" name="modelo" type="text" maxlength="50" required>
+                    <p class="campo__error" data-error-for="modelo"></p>
+                </div>
+                <div class="campo-fila">
+                    <div class="campo">
+                        <label for="anio">Año</label>
+                        <input id="anio" name="anio" type="number" min="1900" step="1" inputmode="numeric">
+                        <p class="campo__error" data-error-for="anio"></p>
+                    </div>
+                    <div class="campo">
+                        <label for="precio">Precio</label>
+                        <input id="precio" name="precio" type="number" min="0" step="0.01" inputmode="decimal">
+                        <p class="campo__error" data-error-for="precio"></p>
+                    </div>
+                </div>
+                <div class="campo">
+                    <label for="estado">Estado</label>
+                    <select id="estado" name="estado" required>
+                        <option value="">Elegí un estado</option>
+                        <option value="Nuevo">Nuevo</option>
+                        <option value="Usado">Usado</option>
+                    </select>
+                    <p class="campo__error" data-error-for="estado"></p>
+                </div>
+                <button class="boton" type="submit">Guardar auto</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/script.js"></script>
+</body>
+</html>

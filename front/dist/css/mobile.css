@@ -1,0 +1,18 @@
+@media (max-width: 760px) {
+    .barra {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .pagina__encabezado {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .ficha,
+    .campo-fila {
+        grid-template-columns: 1fr;
+    }
+
+    .boton { text-align: center; }
+}
