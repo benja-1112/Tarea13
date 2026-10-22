@@ -32,8 +32,15 @@ const API = {
         return this.request('/marcas');
     },
 
-    vehiculos() {
-        return this.request('/vehiculos');
+    vehiculos(pagina = 1, ultima = false) {
+        const params = new URLSearchParams({
+            pagina: String(pagina),
+            por_pagina: '4'
+        });
+        if (ultima) {
+            params.set('ultima', '1');
+        }
+        return this.request('/vehiculos?' + params.toString());
     },
 
     vehiculo(id) {
@@ -46,5 +53,9 @@ const API = {
 
     actualizarVehiculo(id, datos) {
         return this.request('/vehiculos/' + encodeURIComponent(id), 'PUT', datos);
+    },
+
+    eliminarVehiculo(id) {
+        return this.request('/vehiculos/' + encodeURIComponent(id), 'DELETE');
     }
 };

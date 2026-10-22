@@ -10,3 +10,4 @@ $router->get('/vehiculos', 'VehiculoController@listar');
 $router->get('/vehiculos/:id', 'VehiculoController@ver');
 $router->post('/vehiculos', 'VehiculoController@crear');
 $router->put('/vehiculos/:id', 'VehiculoController@actualizar');
+$router->delete('/vehiculos/:id', 'VehiculoController@eliminar');

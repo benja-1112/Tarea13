@@ -121,6 +121,23 @@ h1 { font-size: 2rem; }
 
 .boton--secundario:hover { background: white; }
 
+.boton--peligro {
+    background: transparent;
+    color: var(--aviso-error-texto);
+    border: 1px solid var(--aviso-error-texto);
+}
+
+.boton--peligro:hover {
+    background: var(--aviso-error);
+    color: var(--aviso-error-texto);
+}
+
+.form-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
 .aviso {
     margin: 0 0 1rem;
     padding: 0.85rem 1rem;
@@ -293,4 +310,45 @@ h1 { font-size: 2rem; }
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
+}
+
+.paginacion {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1.25rem 0 0;
+}
+
+.paginacion[hidden] {
+    display: none;
+}
+
+.paginacion__boton {
+    border: 0;
+    border-radius: 999px;
+    padding: 0.65rem 1.05rem;
+    background: var(--tinta);
+    color: #f7f4ee;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.paginacion__boton:hover:not(:disabled) {
+    background: #2c3644;
+}
+
+.paginacion__boton--actual {
+    background: var(--acento);
+    color: white;
+}
+
+.paginacion__boton:disabled {
+    cursor: default;
+}
+
+.paginacion__boton:disabled:not(.paginacion__boton--actual) {
+    background: #d5cfc4;
+    color: #3d4652;
 }

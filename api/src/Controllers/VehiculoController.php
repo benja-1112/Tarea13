@@ -13,9 +13,38 @@ class VehiculoController {
 
     public function listar() {
         $modelo = new VehiculoModel($this->db);
+        $porPagina = isset($_GET['por_pagina']) ? (int) $_GET['por_pagina'] : 4;
+        if ($porPagina < 1) {
+            $porPagina = 4;
+        }
+        if ($porPagina > 20) {
+            $porPagina = 20;
+        }
+
+        $total = $modelo->contar();
+        $paginas = $total === 0 ? 0 : (int) ceil($total / $porPagina);
+        $pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+        if (isset($_GET['ultima']) && $_GET['ultima'] === '1' && $paginas > 0) {
+            $pagina = $paginas;
+        }
+        if ($pagina < 1) {
+            $pagina = 1;
+        }
+        if ($paginas > 0 && $pagina > $paginas) {
+            $pagina = $paginas;
+        }
+
+        $data = $total === 0 ? [] : $modelo->listarPagina($porPagina, ($pagina - 1) * $porPagina);
+
         echo json_encode([
             'status' => 'ok',
-            'data' => $modelo->listar(),
+            'data' => $data,
+            'paginacion' => [
+                'pagina' => $paginas === 0 ? 0 : $pagina,
+                'por_pagina' => $porPagina,
+                'total' => $total,
+                'paginas' => $paginas,
+            ],
         ], JSON_UNESCAPED_UNICODE);
     }
 
@@ -95,6 +124,26 @@ class VehiculoController {
             'status' => 'ok',
             'message' => 'Los datos se modificaron correctamente',
             'data' => $vehiculo,
+        ], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function eliminar($id) {
+        $modelo = new VehiculoModel($this->db);
+        $vehiculo = $modelo->obtener($id);
+
+        if (!$vehiculo) {
+            http_response_code(404);
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'No se encontró el vehículo',
+            ], JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        $modelo->eliminar($id);
+        echo json_encode([
+            'status' => 'ok',
+            'message' => 'El auto se eliminó correctamente',
         ], JSON_UNESCAPED_UNICODE);
     }
 

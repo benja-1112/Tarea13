@@ -15,8 +15,16 @@ class VehiculoModel {
                 LEFT JOIN MARCAS m ON v.id_marca = m.id_marca';
     }
 
-    public function listar() {
-        $stmt = $this->db->query($this->sqlConMarca() . ' ORDER BY v.id_vehiculo');
+    public function contar() {
+        return (int) $this->db->query('SELECT COUNT(*) FROM VEHICULOS')->fetchColumn();
+    }
+
+    public function listarPagina($limite, $offset) {
+        $limite = (int) $limite;
+        $offset = (int) $offset;
+        $stmt = $this->db->query(
+            $this->sqlConMarca() . " ORDER BY v.id_vehiculo LIMIT $limite OFFSET $offset"
+        );
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
@@ -57,5 +65,21 @@ class VehiculoModel {
             (int) $id,
         ]);
         return $stmt->rowCount() >= 0;
+    }
+
+    public function eliminar($id) {
+        $id = (int) $id;
+        $this->db->beginTransaction();
+        try {
+            $venta = $this->db->prepare('DELETE FROM VENTAS WHERE id_vehiculo = ?');
+            $venta->execute([$id]);
+            $vehiculo = $this->db->prepare('DELETE FROM VEHICULOS WHERE id_vehiculo = ?');
+            $vehiculo->execute([$id]);
+            $this->db->commit();
+            return $vehiculo->rowCount() > 0;
+        } catch (\Exception $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
     }
 }

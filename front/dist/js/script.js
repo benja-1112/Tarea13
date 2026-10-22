@@ -14,37 +14,95 @@ document.addEventListener('DOMContentLoaded', () => {
 function iniciarListado() {
     const aviso = document.querySelector('#aviso');
     const params = new URLSearchParams(window.location.search);
-    if (params.get('agregado') === '1') {
+    const agregado = params.get('agregado') === '1';
+    const eliminado = params.get('eliminado') === '1';
+    if (agregado) {
         mostrarAviso(aviso, 'ok', 'El auto se guardó correctamente y ya figura en el listado.');
+    }
+    if (eliminado) {
+        mostrarAviso(aviso, 'ok', 'El auto se eliminó correctamente.');
+    }
+    if (agregado || eliminado) {
         params.delete('agregado');
+        params.delete('eliminado');
         const limpia = params.toString();
         history.replaceState({}, '', window.location.pathname + (limpia ? '?' + limpia : ''));
     }
-    cargarListado();
+    const pagina = Number(params.get('pagina')) || 1;
+    cargarListado(pagina, agregado);
 }
 
-async function cargarListado() {
+async function cargarListado(pagina = 1, ultima = false) {
     const contenedor = document.querySelector('#listado');
     const aviso = document.querySelector('#aviso');
     contenedor.replaceChildren();
     contenedor.append(mensajeEstado('Cargando autos...'));
 
-    const respuesta = await API.vehiculos();
+    const respuesta = await API.vehiculos(pagina, ultima);
     contenedor.replaceChildren();
 
     if (respuesta.status !== 'ok' || !Array.isArray(respuesta.data)) {
         mostrarAviso(aviso, 'error', respuesta.message || 'No se pudo cargar el listado.');
+        pintarPaginacion(null);
         return;
     }
 
     if (respuesta.data.length === 0) {
         contenedor.append(mensajeEstado('Todavía no hay autos cargados.'));
+        pintarPaginacion(null);
         return;
     }
 
     respuesta.data.forEach((auto) => {
         contenedor.append(tarjetaAuto(auto));
     });
+    pintarPaginacion(respuesta.paginacion);
+    if (respuesta.paginacion && respuesta.paginacion.pagina) {
+        const url = new URL(window.location.href);
+        url.searchParams.set('pagina', String(respuesta.paginacion.pagina));
+        url.searchParams.delete('agregado');
+        url.searchParams.delete('ultima');
+        history.replaceState({}, '', url.pathname + url.search);
+    }
+}
+
+function pintarPaginacion(paginacion) {
+    const nav = document.querySelector('#paginacion');
+    nav.replaceChildren();
+
+    if (!paginacion || paginacion.paginas < 2) {
+        nav.hidden = true;
+        return;
+    }
+
+    nav.hidden = false;
+    const pagina = paginacion.pagina;
+
+    nav.append(botonPagina('Anterior', pagina - 1, pagina === 1));
+
+    for (let numero = 1; numero <= paginacion.paginas; numero++) {
+        const boton = botonPagina(String(numero), numero, false);
+        if (numero === pagina) {
+            boton.classList.add('paginacion__boton--actual');
+            boton.setAttribute('aria-current', 'page');
+            boton.disabled = true;
+        }
+        nav.append(boton);
+    }
+
+    nav.append(botonPagina('Siguiente', pagina + 1, pagina === paginacion.paginas));
+}
+
+function botonPagina(texto, pagina, deshabilitado) {
+    const boton = document.createElement('button');
+    boton.type = 'button';
+    boton.className = 'paginacion__boton';
+    boton.textContent = texto;
+    boton.disabled = deshabilitado;
+    if (!deshabilitado) {
+        boton.addEventListener('click', () => cargarListado(pagina));
+    }
+    return boton;
 }
 
 function tarjetaAuto(auto) {
@@ -134,6 +192,16 @@ async function iniciarFicha() {
         llenarFormulario(form, respuesta.data);
         mostrarAviso(aviso, 'ok', respuesta.message || 'Los datos se modificaron correctamente.');
     });
+
+    document.querySelector('#eliminar-auto').addEventListener('click', async () => {
+        const respuesta = await API.eliminarVehiculo(id);
+        if (respuesta.status !== 'ok') {
+            mostrarAviso(aviso, 'error', respuesta.message || 'No se pudo eliminar el auto.');
+            return;
+        }
+
+        window.location.href = '/front/index.html?eliminado=1';
+    });
 }
 
 async function iniciarAlta() {
@@ -168,7 +236,7 @@ async function iniciarAlta() {
             return;
         }
 
-        window.location.href = '/front/index.html?agregado=1';
+        window.location.href = '/front/index.html?agregado=1&ultima=1';
     });
 }
 

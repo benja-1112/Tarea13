@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ficha del auto</title>
     <link rel="icon" href="/front/dist/assets/logo.png" type="image/png">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/mobile.css">
+    <link rel="stylesheet" href="../css/style.css?v=4">
+    <link rel="stylesheet" href="../css/mobile.css?v=4">
 </head>
 <body data-pagina="vehiculo">
 
@@ -96,13 +96,16 @@
                         </select>
                         <p class="campo__error" data-error-for="estado"></p>
                     </div>
-                    <button class="boton" type="submit">Guardar cambios</button>
+                    <div class="form-acciones">
+                        <button class="boton" type="submit">Guardar cambios</button>
+                        <button class="boton boton--peligro" id="eliminar-auto" type="button">Eliminar auto</button>
+                    </div>
                 </form>
             </section>
         </div>
     </main>
 
-    <script src="../js/api.js"></script>
-    <script src="../js/script.js"></script>
+    <script src="../js/api.js?v=5"></script>
+    <script src="../js/script.js?v=5"></script>
 </body>
 </html>
